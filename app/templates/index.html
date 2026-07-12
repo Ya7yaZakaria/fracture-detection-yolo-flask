@@ -63,14 +63,18 @@ Automatic Fracture Detection
         {% endif %}
         shadow-sm"
     >
-        <h2 class="h4 fw-bold mb-2">
-            {{ prediction.status }}
-        </h2>
+        <p class="text-uppercase small fw-semibold mb-1">Detection Result</p>
+        <h2 class="h4 fw-bold mb-3">{{ prediction.status }}</h2>
 
         {% if prediction.fracture_detected %}
             <p class="mb-1">
-                Highest confidence:
+                Confidence:
                 <strong>{{ prediction.confidence }}%</strong>
+            </p>
+
+            <p class="mb-1">
+                Location:
+                <strong>{{ prediction.location }}</strong>
             </p>
 
             <p class="mb-0">
@@ -118,3 +122,4 @@ Automatic Fracture Detection
 {% endif %}
 
 {% endblock %}
+
