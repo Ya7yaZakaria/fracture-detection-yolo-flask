@@ -1,14 +1,120 @@
-{% extends "base.html" %}
+﻿{% extends "base.html" %}
 
-{% block title %}Automatic Fracture Detection{% endblock %}
+{% block title %}
+Automatic Fracture Detection
+{% endblock %}
 
 {% block content %}
-<div class="text-center">
-    <h1>Automatic Fracture Detection Using YOLO</h1>
-    <p class="lead">Educational computer-aided detection prototype for orthopedic X-ray images.</p>
-    <a class="btn btn-primary" href="#">Upload X-ray</a>
-    <p class="text-muted mt-4">
-        This system is not intended for standalone clinical diagnosis.
+
+<section class="text-center mb-5">
+    <span class="badge text-bg-primary mb-3">
+        YOLO-Powered Medical Imaging
+    </span>
+
+    <h1 class="display-5 fw-bold">
+        Automatic Fracture Detection
+    </h1>
+
+    <p class="lead text-muted mx-auto hero-description">
+        Upload an orthopedic X-ray image to detect possible fracture
+        regions using a trained YOLO object-detection model.
     </p>
-</div>
+</section>
+
+<section class="card border-0 shadow-sm upload-card mb-5">
+    <div class="card-body p-4 p-md-5">
+        <h2 class="h4 fw-bold mb-3">Upload X-ray Image</h2>
+
+        <p class="text-muted">
+            Supported formats: JPG, JPEG, and PNG.
+        </p>
+
+        <form method="POST" enctype="multipart/form-data">
+            <div class="mb-4">
+                <label for="xray_image" class="form-label fw-semibold">
+                    Select an X-ray image
+                </label>
+
+                <input
+                    class="form-control form-control-lg"
+                    type="file"
+                    id="xray_image"
+                    name="xray_image"
+                    accept=".jpg,.jpeg,.png,image/jpeg,image/png"
+                    required
+                >
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-lg w-100">
+                Analyze X-ray
+            </button>
+        </form>
+    </div>
+</section>
+
+{% if prediction %}
+<section class="results-section">
+    <div
+        class="alert
+        {% if prediction.fracture_detected %}
+            alert-danger
+        {% else %}
+            alert-success
+        {% endif %}
+        shadow-sm"
+    >
+        <h2 class="h4 fw-bold mb-2">
+            {{ prediction.status }}
+        </h2>
+
+        {% if prediction.fracture_detected %}
+            <p class="mb-1">
+                Highest confidence:
+                <strong>{{ prediction.confidence }}%</strong>
+            </p>
+
+            <p class="mb-0">
+                Detected fracture regions:
+                <strong>{{ prediction.detection_count }}</strong>
+            </p>
+        {% else %}
+            <p class="mb-0">
+                No fracture bounding box exceeded the configured
+                confidence threshold.
+            </p>
+        {% endif %}
+    </div>
+
+    <div class="row g-4 mt-1">
+        <div class="col-lg-6">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <h3 class="h5 fw-bold">Original X-ray</h3>
+
+                    <img
+                        src="{{ url_for('static', filename=original_image) }}"
+                        class="img-fluid rounded result-image"
+                        alt="Original uploaded X-ray"
+                    >
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <h3 class="h5 fw-bold">AI Detection Result</h3>
+
+                    <img
+                        src="{{ url_for('static', filename=result_image) }}"
+                        class="img-fluid rounded result-image"
+                        alt="YOLO annotated X-ray result"
+                    >
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
 {% endblock %}
