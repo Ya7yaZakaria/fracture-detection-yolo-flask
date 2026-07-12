@@ -1,4 +1,4 @@
-# Test Evaluation Summary
+﻿# Test Evaluation Summary
 
 ## Test Dataset
 
@@ -13,6 +13,7 @@ The test set included:
 
 - Precision: 0.873
 - Recall: 0.896
+- F1-Score: 0.884
 - mAP50: 0.900
 - mAP50-95: 0.627
 
@@ -20,6 +21,7 @@ The test set included:
 
 - Precision: 0.586
 - Recall: 0.487
+- F1-Score: 0.532
 - mAP50: 0.480
 - mAP50-95: 0.210
 
